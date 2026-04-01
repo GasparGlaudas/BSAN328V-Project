@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Players | TeeTime Connect</title>
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+    <header>
+        <h1>TeeTime Connect</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="players.html">Players</a></li>
+                <li><a href="schedule.html">Schedule Tee Time</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>Find Golfers to Play With</h2>
+            <form id="searchForm" role="search" aria-label="Search for players">
+                <label for="searchInput">Search players:</label>
+                <input type="text" id="searchInput" name="searchInput" placeholder="Enter name or handicap...">
+                <label for="stateSelect">State:</label>
+                <select id="stateSelect" name="stateSelect">
+                    <option value="">All States</option>
+                    <option value="CA">California</option>
+                    <option value="TX">Texas</option>
+                    <option value="FL">Florida</option>
+                    <option value="NY">New York</option>
+                    <option value="IL">Illinois</option>
+                </select>
+                <label for="courseSelect">Course:</label>
+                <select id="courseSelect" name="courseSelect">
+                    <option value="">All Courses</option>
+                    <option value="Pebble Beach">Pebble Beach</option>
+                    <option value="Augusta National">Augusta National</option>
+                    <option value="Bethpage Black">Bethpage Black</option>
+                    <option value="TPC Sawgrass">TPC Sawgrass</option>
+                    <option value="Whistling Straits">Whistling Straits</option>
+                </select>
+                <button type="submit">Search</button>
+            </form>
+            <table id="playersTable" aria-label="Players and Handicaps">
+                <caption>Players and Their Playing Handicaps</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">State</th>
+                        <th scope="col">Course</th>
+                        <th scope="col">Playing Handicap</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Populated by JavaScript -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+    <script>
+    // Example player data with state and course
+    const players = [
+        { name: "Alex Morgan", state: "CA", course: "Pebble Beach", handicap: 12.3 },
+        { name: "Jamie Lee", state: "TX", course: "TPC Sawgrass", handicap: 8.7 },
+        { name: "Chris Kim", state: "FL", course: "Augusta National", handicap: 22.5 },
+        { name: "Taylor Smith", state: "NY", course: "Bethpage Black", handicap: 3.2 },
+        { name: "Jordan Green", state: "IL", course: "Whistling Straits", handicap: 17.8 },
+        { name: "Morgan Lee", state: "CA", course: "Pebble Beach", handicap: 0.0 },
+        { name: "Sam Patel", state: "TX", course: "TPC Sawgrass", handicap: 54.0 }
+    ];
+
+    function renderTable(data) {
+        const tbody = document.querySelector('#playersTable tbody');
+        tbody.innerHTML = '';
+        data.forEach(player => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${player.name}</td>
+                <td>${player.state}</td>
+                <td>${player.course}</td>
+                <td>${player.handicap.toFixed(1)}</td>
+                <td><a href="schedule.html?player=${encodeURIComponent(player.name)}">Schedule Tee Time</a></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    document.getElementById('searchForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        const state = document.getElementById('stateSelect').value;
+        const course = document.getElementById('courseSelect').value;
+        const filtered = players.filter(p => {
+            const matchesQuery =
+                p.name.toLowerCase().includes(query) ||
+                p.handicap.toFixed(1).includes(query);
+            const matchesState = !state || p.state === state;
+            const matchesCourse = !course || p.course === course;
+            return matchesQuery && matchesState && matchesCourse;
+        });
+        renderTable(filtered);
+    });
+
+    // Initial render
+    renderTable(players);
+    </script>
+</body>
+</html>

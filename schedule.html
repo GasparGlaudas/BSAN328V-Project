@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule Tee Time | TeeTime Connect</title>
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+    <header>
+        <h1>TeeTime Connect</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="players.html">Players</a></li>
+                <li><a href="schedule.html">Schedule Tee Time</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>Schedule a Tee Time</h2>
+            <form>
+                <fieldset>
+                    <legend>Book Your Tee Time</legend>
+                    <label for="playerName">Your Name:</label>
+                    <input type="text" id="playerName" name="playerName" required><br><br>
+
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date" required><br><br>
+
+                    <label for="time">Time:</label>
+                    <input type="time" id="time" name="time" required><br><br>
+
+                    <label for="course">Course Name:</label>
+                    <input type="text" id="course" name="course" required><br><br>
+
+                    <label for="friends">Friends to Invite (optional):</label>
+                    <input type="text" id="friends" name="friends" placeholder="Enter names, comma separated"><br><br>
+
+                    <button type="submit">Book Tee Time</button>
+                </fieldset>
+            </form>
+        </section>
+    </main>
+</body>
+</html>
