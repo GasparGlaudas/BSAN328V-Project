@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Tee Times | TeeTime Connect</title>
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+    <header>
+        <h1>TeeTime Connect</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="players.html">Players</a></li>
+                <li><a href="schedule.html">Schedule Tee Time</a></li>
+                <li><a href="tee-times.html">My Tee Times</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>My Tee Times</h2>
+            <p>Review your upcoming tee times and past rounds, including the course, time, and playing partners.</p>
+            <div class="tee-time-summary">
+                <div class="tee-time-card">
+                    <h3>Upcoming Tee Times</h3>
+                    <div id="upcomingList"></div>
+                    <button id="showPastButton" class="secondary-button" type="button">Show past tee times</button>
+                </div>
+                <div id="pastCard" class="tee-time-card hidden">
+                    <h3>Past Tee Times</h3>
+                    <div id="pastList"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script>
+        const teeTimes = [
+            {
+                date: '2026-04-24',
+                time: '09:30 AM',
+                course: 'Pebble Beach',
+                partners: 'Jamie Lee, Alex Morgan'
+            },
+            {
+                date: '2026-03-15',
+                time: '02:00 PM',
+                course: 'Augusta National',
+                partners: 'Taylor Smith'
+            },
+            {
+                date: '2026-04-10',
+                time: '11:00 AM',
+                course: 'TPC Sawgrass',
+                partners: 'Chris Kim, Morgan Lee'
+            },
+            {
+                date: '2026-02-28',
+                time: '08:15 AM',
+                course: 'Bethpage Black',
+                partners: 'Jordan Green'
+            }
+        ];
+
+        function renderList(items, containerId) {
+            const container = document.getElementById(containerId);
+            if (!items.length) {
+                container.innerHTML = '<p class="empty-state">No tee times found.</p>';
+                return;
+            }
+
+            const rows = items.map(item => {
+                return `
+                    <div class="tee-time-item">
+                        <strong>${item.date} at ${item.time}</strong>
+                        <p><span class="item-label">Course:</span> ${item.course}</p>
+                        <p><span class="item-label">Partners:</span> ${item.partners}</p>
+                    </div>
+                `;
+            }).join('\n');
+
+            container.innerHTML = rows;
+        }
+
+        function isUpcoming(dateString) {
+            const today = new Date();
+            const target = new Date(dateString);
+            return target >= new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        }
+
+        const upcoming = teeTimes.filter(t => isUpcoming(t.date));
+        const past = teeTimes.filter(t => !isUpcoming(t.date));
+
+        renderList(upcoming, 'upcomingList');
+        renderList(past, 'pastList');
+
+        const pastCard = document.getElementById('pastCard');
+        const showPastButton = document.getElementById('showPastButton');
+
+        if (!past.length) {
+            showPastButton.textContent = 'No past tee times yet';
+            showPastButton.disabled = true;
+        } else {
+            showPastButton.addEventListener('click', () => {
+                const isVisible = !pastCard.classList.toggle('hidden');
+                showPastButton.textContent = isVisible ? 'Hide past tee times' : 'Show past tee times';
+                if (isVisible) {
+                    pastCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        }
+    </script>
+</body>
+</html>
